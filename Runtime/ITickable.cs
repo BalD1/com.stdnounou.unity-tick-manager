@@ -1,4 +1,4 @@
-namespace StdNounou.TickManager
+namespace StdNounou.Tick
 {
     public interface ITickable
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace StdNounou.TickManager
+namespace StdNounou.Tick
 {
     public static class TickManagerEvents
     {

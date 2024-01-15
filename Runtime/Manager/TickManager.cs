@@ -1,7 +1,7 @@
 using StdNounou.Core;
 using UnityEngine;
 
-namespace StdNounou.TickManager
+namespace StdNounou.Tick
 {
     public class TickManager : Singleton<TickManager>
     {
