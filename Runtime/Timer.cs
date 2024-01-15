@@ -4,15 +4,15 @@ namespace StdNounou.TickManager
 {
     public class Timer : ITickable, IDisposable
     {
-        private float maxDuration;
-        private float duration;
+        public float MaxDuration { get; private set; }
+        public float Duration { get; private set; }
         private int remainingTicks;
 
         private event Action onEnd;
 
         private bool isSubscribed;
-        private bool loop;
-        private int loopCount = -1;
+        public bool Loop { get; private set; }
+        public int CurrentLoopCount { get; private set; } = -1;
 
         public Timer(float duration, Action onEnd)
             => Setup(duration, onEnd, false, 0);
@@ -23,12 +23,12 @@ namespace StdNounou.TickManager
 
         private void Setup(float duration, Action onEnd, bool loop, int loopCount)
         {
-            this.maxDuration = this.duration = duration;
+            this.MaxDuration = this.Duration = duration;
             this.onEnd = onEnd;
             remainingTicks = (int)(duration / TickManager.TICK_TIMER_MAX);
 
-            this.loop = loop;
-            this.loopCount = loopCount;
+            this.Loop = loop;
+            this.CurrentLoopCount = loopCount;
         }
 
         private void Subscriber()
@@ -74,7 +74,7 @@ namespace StdNounou.TickManager
         /// /// </summary>
         /// <param name="callEndAction"></param>
         public void Restart(bool callEndAction)
-            => Restart(callEndAction, maxDuration);
+            => Restart(callEndAction, MaxDuration);
 
         /// <summary>
         /// Will start the timer again from <paramref name="newDuration"/>.
@@ -92,7 +92,7 @@ namespace StdNounou.TickManager
         /// Will set the max time and duration to original max duration. Will start the timer again if it is stopped.
         /// </summary>
         public void Reset()
-            => Reset(maxDuration);
+            => Reset(MaxDuration);
 
         /// <summary>
         /// Will set the max time and duration to original <paramref name="newTime"/>. Will start the timer again if it is stopped.
@@ -100,14 +100,14 @@ namespace StdNounou.TickManager
         /// <param name="newTime"></param>
         private void Reset(float newTime)
         {
-            this.duration = newTime;
-            this.remainingTicks = (int)(duration / TickManager.TICK_TIMER_MAX);
+            this.MaxDuration = this.Duration = newTime;
+            this.remainingTicks = (int)(Duration / TickManager.TICK_TIMER_MAX);
         }
 
         public void OnTick(int tick)
         {
             remainingTicks--;
-            duration -= TickManager.TICK_TIMER_MAX;
+            Duration -= TickManager.TICK_TIMER_MAX;
 
             if (remainingTicks <= 0) OnEnd();
         }
@@ -126,29 +126,32 @@ namespace StdNounou.TickManager
         /// <param name="loopCount"></param>
         public void SetLoop(bool loop, int loopCount)
         {
-            this.loop = loop;
-            this.loopCount = loopCount;
+            this.Loop = loop;
+            this.CurrentLoopCount = loopCount;
         }
 
         public int RemainingTicks()
             => remainingTicks;
 
         public float RemainingTimeInSeconds()
-            => duration;
+            => Duration;
+
+        public bool IsRunning()
+            => isSubscribed;
 
         private void OnEnd()
         {
             onEnd?.Invoke();
 
-            if (loop)
+            if (Loop)
             {
-                if (loopCount > 0)
+                if (CurrentLoopCount > 0)
                 {
-                    loopCount--;
+                    CurrentLoopCount--;
                     Reset();
                     return;
                 }
-                else if (loopCount == 0) loop = false;
+                else if (CurrentLoopCount == 0) Loop = false;
                 else
                 {
                     Reset();

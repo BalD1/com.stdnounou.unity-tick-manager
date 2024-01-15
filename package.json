@@ -9,5 +9,11 @@
     "name": "BalD",
     "email": "florianhusson1@gmail.com",
     "url": "https://fh-portfolio-d3d69c.webflow.io"
+  },
+  "samples" : [
+  {
+	  "displayName": "Sample Scene",
+	  "description": "Scene showing how to use ComponentHolder",
+	  "path": "Samples~/TimerSample"
   }
 }
