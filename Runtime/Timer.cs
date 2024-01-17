@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace StdNounou.Tick
 {
@@ -102,6 +103,11 @@ namespace StdNounou.Tick
         {
             this.MaxDuration = this.Duration = newTime;
             this.remainingTicks = (int)(Duration / TickManager.TICK_TIMER_MAX);
+        }
+
+        public void SetNewMaxDuration(float newTime)
+        {
+            this.MaxDuration = newTime;
         }
 
         public void OnTick(int tick)
