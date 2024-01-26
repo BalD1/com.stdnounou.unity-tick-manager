@@ -1,6 +1,6 @@
 {
   "name": "com.stdnounou.tick-manager",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "displayName": "Tick Manager",
   "description": "This is a system that will send an event every given seconds. Based on CodeMonkey's tutorial.",
   "unity": "2021.3",
